@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/updatestory_dest">
+
+    <fragment
+        android:id="@+id/updatestory_dest"
+        android:name="com.soradbh.truyenfull.ui.UpdateStoryFragment"
+        android:label="fragment_update_story"
+        tools:layout="@layout/fragment_update_story" >
+        <action
+            android:id="@+id/action_updatestory_dest_to_infostory_dest"
+            app:destination="@id/infostory_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/category_dest"
+        android:name="com.soradbh.truyenfull.ui.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_category_dest_to_storybycat_dest"
+            app:destination="@id/storybycat_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/search_dest"
+        android:name="com.soradbh.truyenfull.ui.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_search_dest_to_infostory_dest"
+            app:destination="@id/infostory_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/infostory_dest"
+        android:name="com.soradbh.truyenfull.ui.InfoStoryFragment"
+        android:label="fragment_info_story"
+        tools:layout="@layout/fragment_info_story" >
+        <action
+            android:id="@+id/action_infostory_dest_to_listchapter_dest"
+            app:destination="@id/listchapter_dest" />
+        <action
+            android:id="@+id/action_infostory_dest_to_chapter_dest"
+            app:destination="@id/chapter_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/listchapter_dest"
+        android:name="com.soradbh.truyenfull.ui.ListChapterFragment"
+        android:label="fragment_list_chapter"
+        tools:layout="@layout/fragment_list_chapter" >
+        <action
+            android:id="@+id/action_listchapter_dest_to_chapter_dest"
+            app:destination="@id/chapter_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/chapter_dest"
+        android:name="com.soradbh.truyenfull.ui.ChapterFragment"
+        android:label="fragment_chapter"
+        tools:layout="@layout/fragment_chapter" >
+        <action
+            android:id="@+id/action_chapter_dest_to_listchapter_dest"
+            app:destination="@id/listchapter_dest" />
+        <action
+            android:id="@+id/action_chapter_dest_to_infostory_dest"
+            app:destination="@id/infostory_dest"
+            app:popUpTo="@id/infostory_dest"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/storybycat_dest"
+        android:name="com.soradbh.truyenfull.ui.StoryByCategoryFragment"
+        android:label="fragment_story_by_category"
+        tools:layout="@layout/fragment_story_by_category" >
+        <action
+            android:id="@+id/action_storybycat_dest_to_infostory_dest"
+            app:destination="@id/infostory_dest" />
+    </fragment>
+</navigation>
