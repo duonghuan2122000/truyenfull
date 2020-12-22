@@ -1,43 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_height="match_parent"
+<LinearLayout
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
     tools:context=".ui.EachChapterFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:visibility="visible"
+        android:id="@+id/container_eachchapter"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="match_parent">
 
-        <TextView
-            android:padding="@dimen/default_margin"
-            android:gravity="center"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/name_story"
-            android:id="@+id/textview_namestory_chapter"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:paddingHorizontal="@dimen/default_margin"
-            android:paddingBottom="@dimen/default_margin"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/name_story"
-            android:id="@+id/textview_name_chapter"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
+            <TextView
+                android:padding="@dimen/default_margin"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name_story"
+                android:id="@+id/textview_namestory_chapter"
+                android:textStyle="bold"
+                android:textSize="25sp"/>
 
-        <TextView
-            android:textSize="18sp"
-            android:padding="@dimen/default_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/name_story"
-            android:id="@+id/textview_content_chapter"/>
-    </LinearLayout>
+            <TextView
+                android:paddingHorizontal="@dimen/default_margin"
+                android:paddingBottom="@dimen/default_margin"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name_story"
+                android:id="@+id/textview_name_chapter"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
 
-</ScrollView>
+            <TextView
+                android:textSize="18sp"
+                android:padding="@dimen/default_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name_story"
+                android:id="@+id/textview_content_chapter"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

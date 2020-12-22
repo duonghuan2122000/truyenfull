@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.soradbh.truyenfull.R;
 import com.soradbh.truyenfull.adapter.ListStoryAdapter;
@@ -28,6 +29,8 @@ import com.soradbh.truyenfull.viewmodel.UpdateStoryViewModel;
 public class UpdateStoryFragment extends Fragment {
     private UpdateStoryViewModel viewModel;
     private ListStoryAdapter adapter;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     public UpdateStoryFragment() {
         // Required empty public constructor
@@ -47,16 +50,30 @@ public class UpdateStoryFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.nav_updatestory);
         adapter = new ListStoryAdapter();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview_updatestory);
+        recyclerView = view.findViewById(R.id.recyclerview_updatestory);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
+        progressBar = view.findViewById(R.id.progress_bar);
 
         viewModel = new ViewModelProvider(requireActivity()).get(UpdateStoryViewModel.class);
+        viewModel.getSpinner().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if(loading){
+                    progressBar.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         viewModel.getListStory().observe(getViewLifecycleOwner(), new Observer<PagedList<ListStoryModel>>() {
             @Override
             public void onChanged(PagedList<ListStoryModel> listStoryModels) {
                 adapter.submitList(listStoryModels);
+                viewModel.setSpinner(false);
             }
         });
 

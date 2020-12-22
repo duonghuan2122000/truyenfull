@@ -7,6 +7,8 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,11 @@ import com.soradbh.truyenfull.viewmodel.ChapterViewModel;
 
 public class EachChapterFragment extends Fragment {
     private ChapterViewModel viewModel;
+
+    private TextView textViewNameStory, textViewNameChapter, textViewContentChapter;
+    private ScrollView container;
+    private ProgressBar progressBar;
+
     public EachChapterFragment(){
     }
     @Nullable
@@ -33,10 +40,24 @@ public class EachChapterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final TextView textViewNameStory = view.findViewById(R.id.textview_namestory_chapter);
-        final TextView textViewNameChapter = view.findViewById(R.id.textview_name_chapter);
-        final TextView textViewContentChapter = view.findViewById(R.id.textview_content_chapter);
+        container = view.findViewById(R.id.container_eachchapter);
+        progressBar = view.findViewById(R.id.progress_bar);
+        textViewNameStory = view.findViewById(R.id.textview_namestory_chapter);
+        textViewNameChapter = view.findViewById(R.id.textview_name_chapter);
+        textViewContentChapter = view.findViewById(R.id.textview_content_chapter);
         viewModel = new ViewModelProvider(requireActivity()).get(ChapterViewModel.class);
+        viewModel.getSpinner().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if(loading){
+                    progressBar.setVisibility(View.VISIBLE);
+                    container.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    container.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         viewModel.getChapter().observe(getViewLifecycleOwner(), new Observer<ChapterModel>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.soradbh.truyenfull.R;
 import com.soradbh.truyenfull.adapter.CategoryAdapter;
@@ -31,6 +32,11 @@ import java.util.List;
 public class CategoryFragment extends Fragment {
     private CategoryViewModel viewModel;
     private List<CategoryModel> listCategories = new ArrayList<>();
+
+    private CategoryAdapter adapter;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -48,16 +54,29 @@ public class CategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.nav_category);
-        final CategoryAdapter adapter = new CategoryAdapter(listCategories);
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerview_category);
+        progressBar = view.findViewById(R.id.progress_bar);
+        adapter = new CategoryAdapter(listCategories);
+        recyclerView = view.findViewById(R.id.recyclerview_category);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(CategoryViewModel.class);
+        viewModel.getSpinner().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if (loading) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         viewModel.getListCategories().observe(getViewLifecycleOwner(), new Observer<List<CategoryModel>>() {
             @Override
             public void onChanged(List<CategoryModel> data) {
-                Log.d("Cateogory", ""+data.size());
+                Log.d("Cateogory", "" + data.size());
                 adapter.addListCategories(data);
             }
         });
@@ -75,6 +94,6 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel.fetchListCategories();
+        viewModel.setListCategories();
     }
 }

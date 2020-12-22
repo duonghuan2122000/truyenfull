@@ -16,9 +16,11 @@ public class SearchStoryViewModel extends ViewModel {
     private String mUrl = "";
     private Executor executor;
     private LiveData<PagedList<ListStoryModel>> listStory = new MutableLiveData<>();
+    private MutableLiveData<Boolean> spinner = new MutableLiveData<>(false);
 
     public LiveData<PagedList<ListStoryModel>> getListStory(String url){
         if(mUrl.equals(url) || url == "") return listStory;
+        spinner.setValue(true);
         mUrl = url;
         executor = Executors.newFixedThreadPool(5);
         StoryFactory storyFactory = new StoryFactory(url);
@@ -29,6 +31,14 @@ public class SearchStoryViewModel extends ViewModel {
                 .setFetchExecutor(executor)
                 .build();
         return listStory;
+    }
+
+    public LiveData<Boolean> getSpinner(){
+        return spinner;
+    }
+
+    public void setSpinner(Boolean loading){
+        spinner.setValue(loading);
     }
 
 }

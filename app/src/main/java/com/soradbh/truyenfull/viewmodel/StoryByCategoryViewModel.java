@@ -16,9 +16,11 @@ public class StoryByCategoryViewModel extends ViewModel {
     private String mUrl = "";
     private Executor executor;
     private LiveData<PagedList<ListStoryModel>> listStory = new MutableLiveData<>();
+    private MutableLiveData<Boolean> spinner = new MutableLiveData<>(false);
 
     public void init(String url){
         if(mUrl.equals(url)) return;
+        setSpinner(true);
         mUrl = url;
         executor = Executors.newFixedThreadPool(5);
         StoryFactory storyFactory = new StoryFactory(url);
@@ -32,6 +34,14 @@ public class StoryByCategoryViewModel extends ViewModel {
 
     public LiveData<PagedList<ListStoryModel>> getListStory(){
         return listStory;
+    }
+
+    public LiveData<Boolean> getSpinner(){
+        return spinner;
+    }
+
+    public void setSpinner(Boolean loading){
+        spinner.setValue(loading);
     }
 
 }

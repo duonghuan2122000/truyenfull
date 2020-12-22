@@ -11,17 +11,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import android.os.Handler;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.soradbh.truyenfull.R;
@@ -39,11 +39,20 @@ import java.io.IOException;
  */
 public class InfoStoryFragment extends Fragment {
     public static final String URL_STORY = "URL_STORY";
+
+    private String truyenId;
+    private String urlStory;
+
     private InfoStoryViewModel viewModel;
 
     private Handler mHandler = new Handler();
-    private String truyenId;
-    private String urlStory;
+
+    private ImageView imageViewStory;
+    private TextView textViewNameStory, textViewAuthorStory, textViewCatStory, textViewDescriptionStory;
+    private Button buttonReadStory, buttonListChapters;
+    private ScrollView container;
+    private ProgressBar progressBar;
+
 
     public InfoStoryFragment() {
         // Required empty public constructor
@@ -62,12 +71,47 @@ public class InfoStoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.infostory_title);
-        final ImageView imageViewStory = view.findViewById(R.id.imageview_infostory);
-        final TextView textViewNameStory = view.findViewById(R.id.textview_name_infostory);
-        final TextView textViewAuthorStory = view.findViewById(R.id.textview_author_infostory);
-        final TextView textViewCatStory = view.findViewById(R.id.textview_category_infostory);
-        final TextView textViewDescriptionStory = view.findViewById(R.id.textview_description_infostory);
+
+        // Ánh xạ
+        mapping();
+
+        setupViewModel();
+
+        eventButton();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel.setInfoStory(urlStory);
+    }
+
+    private void mapping() {
+        container = getView().findViewById(R.id.container_infostory);
+        progressBar = getView().findViewById(R.id.progress_bar);
+        imageViewStory = getView().findViewById(R.id.imageview_infostory);
+        textViewNameStory = getView().findViewById(R.id.textview_name_infostory);
+        textViewAuthorStory = getView().findViewById(R.id.textview_author_infostory);
+        textViewCatStory = getView().findViewById(R.id.textview_category_infostory);
+        textViewDescriptionStory = getView().findViewById(R.id.textview_description_infostory);
+        buttonReadStory = getView().findViewById(R.id.button_read_infostory);
+        buttonListChapters = getView().findViewById(R.id.button_list_chapter_infostory);
+    }
+
+    private void setupViewModel(){
         viewModel = new ViewModelProvider(requireActivity()).get(InfoStoryViewModel.class);
+        viewModel.getSpinner().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if(loading){
+                    progressBar.setVisibility(View.VISIBLE);
+                    container.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    container.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         viewModel.getInfoStory().observe(getViewLifecycleOwner(), new Observer<InfoStoryModel>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -85,9 +129,9 @@ public class InfoStoryFragment extends Fragment {
                 truyenId = data.getTruyenId();
             }
         });
+    }
 
-        Button buttonReadStory = view.findViewById(R.id.button_read_infostory);
-        Button buttonListChapters = view.findViewById(R.id.button_list_chapter_infostory);
+    private void eventButton(){
         buttonReadStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,19 +150,13 @@ public class InfoStoryFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        viewModel.fetchInfoStory(urlStory);
-    }
-
-    private void onClickReadStory(final View v){
+    private void onClickReadStory(final View v) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Document document = null;
                 try {
-                    document = Jsoup.connect("https://truyenfull.vn/ajax.php?type=chapter_option&data="+truyenId).get();
+                    document = Jsoup.connect("https://truyenfull.vn/ajax.php?type=chapter_option&data=" + truyenId).get();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -2,7 +2,6 @@ package com.soradbh.truyenfull.ui;
 
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +32,12 @@ public class ChapterFragment extends Fragment {
 
     private int totalChapters, positionChapter;
     private String truyenId, urlStory;
+
     private ChapterViewModel viewModel;
+
+    private ViewPagerAdapter adapter;
+    private ViewPager2 viewPager2;
+
     public ChapterFragment() {
         // Required empty public constructor
     }
@@ -57,15 +60,15 @@ public class ChapterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.chapter_title);
         viewModel = new ViewModelProvider(requireActivity()).get(ChapterViewModel.class);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(this, totalChapters);
-        ViewPager2 viewPager2 = view.findViewById(R.id.viewpager_chapter);
+        adapter = new ViewPagerAdapter(this, totalChapters);
+        viewPager2 = view.findViewById(R.id.viewpager_chapter);
         viewPager2.setAdapter(adapter);
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 positionChapter = position;
-                viewModel.fetchChapter(truyenId, position, urlStory);
+                viewModel.setChapter(truyenId, position, urlStory);
             }
 
         });
@@ -80,20 +83,29 @@ public class ChapterFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.list_chapter:
-                Bundle args = new Bundle();
-                args.putString(TRUYEN_ID, truyenId);
-                args.putString(URL_STORY, urlStory);
-                args.putInt(POSITION_CHAPTER, positionChapter);
-                Navigation.findNavController(requireView()).navigate(R.id.action_chapter_dest_to_listchapter_dest, args);
+                navigateToListChapter();
                 return true;
             case R.id.back_infostory:
-                Bundle argsBack = new Bundle();
-                argsBack.putString(URL_STORY, urlStory);
-                Navigation.findNavController(requireView()).navigate(R.id.action_chapter_dest_to_infostory_dest, argsBack);
+                navigateUpInfoStory();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void navigateToListChapter() {
+        Bundle args = new Bundle();
+        args.putString(TRUYEN_ID, truyenId);
+        args.putString(URL_STORY, urlStory);
+        args.putInt(POSITION_CHAPTER, positionChapter);
+        Navigation.findNavController(requireView()).navigate(R.id.action_chapter_dest_to_listchapter_dest, args);
+    }
+
+    private void navigateUpInfoStory() {
+        Bundle args = new Bundle();
+        args.putString(URL_STORY, urlStory);
+        Navigation.findNavController(requireView()).navigate(R.id.action_chapter_dest_to_infostory_dest, args);
     }
 }

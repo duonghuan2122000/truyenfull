@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.soradbh.truyenfull.R;
@@ -34,6 +35,11 @@ import com.soradbh.truyenfull.viewmodel.SearchStoryViewModel;
  */
 public class SearchFragment extends Fragment {
     private SearchStoryViewModel viewModel;
+
+    private RecyclerView recyclerView;
+    private ListStoryAdapter adapter;
+    private ProgressBar progressBar;
+    private EditText editText;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -50,28 +56,40 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        final ListStoryAdapter adapter = new ListStoryAdapter();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview_search);
+        progressBar = view.findViewById(R.id.progress_bar);
+        adapter = new ListStoryAdapter();
+        recyclerView = view.findViewById(R.id.recyclerview_search);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(SearchStoryViewModel.class);
-        final EditText editText = view.findViewById(R.id.edittext_search);
+        viewModel.getSpinner().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if(loading){
+                    progressBar.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        editText = view.findViewById(R.id.edittext_search);
         editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     viewModel.getListStory("https://truyenfull.vn/tim-kiem/?tukhoa=" + editText.getText().toString())
                             .observe(getViewLifecycleOwner(), new Observer<PagedList<ListStoryModel>>() {
                                 @Override
                                 public void onChanged(PagedList<ListStoryModel> data) {
-                                    Log.d("Search", String.valueOf(data.size()));
+                                    viewModel.setSpinner(false);
                                     adapter.submitList(data);
                                 }
                             });
                     View view = getActivity().getCurrentFocus();
-                    if(view != null){
+                    if (view != null) {
                         InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }

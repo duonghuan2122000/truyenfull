@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.soradbh.truyenfull.R;
 import com.soradbh.truyenfull.adapter.ListStoryAdapter;
@@ -32,7 +33,12 @@ public class StoryByCategoryFragment extends Fragment {
     public static final String URL_CAT = "URL_CAT";
     private String nameCategory;
     private String urlCategory;
+
     private StoryByCategoryViewModel viewModel;
+    private ListStoryAdapter adapter;
+    private ProgressBar progressBar;
+
+    private RecyclerView recyclerView;
 
     public StoryByCategoryFragment() {
         // Required empty public constructor
@@ -54,16 +60,30 @@ public class StoryByCategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.nav_category) + " " + nameCategory);
-        final ListStoryAdapter adapter = new ListStoryAdapter();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview_storybycat);
+        progressBar = view.findViewById(R.id.progress_bar);
+        adapter = new ListStoryAdapter();
+        recyclerView = view.findViewById(R.id.recyclerview_storybycat);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(StoryByCategoryViewModel.class);
         viewModel.init(urlCategory);
+        viewModel.getSpinner().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if(loading){
+                    progressBar.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         viewModel.getListStory().observe(getViewLifecycleOwner(), new Observer<PagedList<ListStoryModel>>() {
             @Override
             public void onChanged(PagedList<ListStoryModel> data) {
+                viewModel.setSpinner(false);
                 adapter.submitList(data);
             }
         });

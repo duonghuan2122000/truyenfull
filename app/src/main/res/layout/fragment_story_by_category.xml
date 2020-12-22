@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recyclerview_storybycat"
+<LinearLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.StoryByCategoryFragment"
-    tools:listitem="@layout/item_liststory"/>
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".ui.StoryByCategoryFragment">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="visible"
+        android:id="@+id/recyclerview_storybycat"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        tools:listitem="@layout/item_liststory"/>
+
+
+</LinearLayout>

@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_update_story" >
         <action
             android:id="@+id/action_updatestory_dest_to_infostory_dest"
-            app:destination="@id/infostory_dest" />
+            app:destination="@id/infostory_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/category_dest"
@@ -30,7 +34,11 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_search_dest_to_infostory_dest"
-            app:destination="@id/infostory_dest" />
+            app:destination="@id/infostory_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/infostory_dest"
@@ -39,10 +47,18 @@
         tools:layout="@layout/fragment_info_story" >
         <action
             android:id="@+id/action_infostory_dest_to_listchapter_dest"
-            app:destination="@id/listchapter_dest" />
+            app:destination="@id/listchapter_dest"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_top"
+            app:popEnterAnim="@anim/slide_from_top"
+            app:popExitAnim="@anim/slide_to_bottom" />
         <action
             android:id="@+id/action_infostory_dest_to_chapter_dest"
-            app:destination="@id/chapter_dest" />
+            app:destination="@id/chapter_dest"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_top"
+            app:popEnterAnim="@anim/slide_from_top"
+            app:popExitAnim="@anim/slide_to_bottom" />
     </fragment>
     <fragment
         android:id="@+id/listchapter_dest"
@@ -51,7 +67,11 @@
         tools:layout="@layout/fragment_list_chapter" >
         <action
             android:id="@+id/action_listchapter_dest_to_chapter_dest"
-            app:destination="@id/chapter_dest" />
+            app:destination="@id/chapter_dest"
+            app:enterAnim="@anim/slide_from_top"
+            app:exitAnim="@anim/slide_to_bottom"
+            app:popEnterAnim="@anim/slide_from_bottom"
+            app:popExitAnim="@anim/slide_to_top" />
     </fragment>
     <fragment
         android:id="@+id/chapter_dest"
@@ -60,7 +80,11 @@
         tools:layout="@layout/fragment_chapter" >
         <action
             android:id="@+id/action_chapter_dest_to_listchapter_dest"
-            app:destination="@id/listchapter_dest" />
+            app:destination="@id/listchapter_dest"
+            app:enterAnim="@anim/slide_from_bottom"
+            app:exitAnim="@anim/slide_to_top"
+            app:popEnterAnim="@anim/slide_from_top"
+            app:popExitAnim="@anim/slide_to_bottom" />
         <action
             android:id="@+id/action_chapter_dest_to_infostory_dest"
             app:destination="@id/infostory_dest"
@@ -74,6 +98,10 @@
         tools:layout="@layout/fragment_story_by_category" >
         <action
             android:id="@+id/action_storybycat_dest_to_infostory_dest"
-            app:destination="@id/infostory_dest" />
+            app:destination="@id/infostory_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 </navigation>
