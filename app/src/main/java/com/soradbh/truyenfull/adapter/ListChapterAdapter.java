@@ -11,29 +11,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.soradbh.truyenfull.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListChapterAdapter extends RecyclerView.Adapter<ListChapterAdapter.ListChapterViewHolder> {
     private OnItemClickListener listener;
-    private int positionSelectedChapter;
+    private int positionChapterSelected;
     public interface OnItemClickListener{
         void setClick(int position);
     }
-    private List<String> listChapters = new ArrayList<>();
-    public ListChapterAdapter(List<String> listChapters, int positionSelectedChapter){
+    private List<String> listChapters;
+    public ListChapterAdapter(List<String> listChapters, int positionChapterSelected){
         this.listChapters = listChapters;
-        this.positionSelectedChapter = positionSelectedChapter;
+        this.positionChapterSelected = positionChapterSelected;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
 
-    public void setBackgroundSelected(int position){
-        positionSelectedChapter = position;
-        notifyItemChanged(position);
+    public void setPositionSelected(int position){
+
     }
+
     @NonNull
     @Override
     public ListChapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,7 +43,8 @@ public class ListChapterAdapter extends RecyclerView.Adapter<ListChapterAdapter.
     @Override
     public void onBindViewHolder(@NonNull ListChapterViewHolder holder, int position) {
         holder.textViewName.setText(listChapters.get(position));
-        if(positionSelectedChapter == position){
+        if(positionChapterSelected != RecyclerView.NO_POSITION && positionChapterSelected == position){
+            holder.setIsRecyclable(false);
             holder.textViewName.setTextColor(Color.BLUE);
         }
     }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TruyenFull</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Phần tử trắng</string>
+
+    <string name="nav_updatestory">Trang chủ</string>
+    <string name="nav_category">Thể loại</string>
+    <string name="nav_search">Tìm kiếm</string>
+
+    <string name="infostory_title">Thông tin truyện</string>
+    <string name="chapter_title">Chương truyện</string>
+
+    <string name="name_story">Tên truyện</string>
+    <string name="image_story">Hình ảnh truyện</string>
+    <string name="author_story">Tác giả</string>
+    <string name="cat_story">Thể loại</string>
+    <string name="description_story">Tóm tắt</string>
+
+    <string name="name_chapter">Chương truyện</string>
+
+    <string name="read_story">Đọc truyện</string>
+    <string name="list_chapter">Danh sách chương</string>
+
+    <string name="back_infostory">Quay về trang thông tin truyện</string>
+    <string name="title_list">Tiêu đề</string>
+
+    <string name="text_search">Tìm kiếm...</string>
+</resources>

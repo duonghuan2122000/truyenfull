@@ -36,6 +36,8 @@ public class ListChapterFragment extends Fragment {
     private int totalChapters;
     private int positionChapter;
     private String urlStory;
+    private ListChapterAdapter adapter;
+    private RecyclerView recyclerView;
 
     public ListChapterFragment() {
         // Required empty public constructor
@@ -58,8 +60,8 @@ public class ListChapterFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.list_chapter);
 
-        final ListChapterAdapter adapter = new ListChapterAdapter(listChapters, positionChapter);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview_listchapter);
+        adapter = new ListChapterAdapter(listChapters, positionChapter);
+        recyclerView = view.findViewById(R.id.recyclerview_listchapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
